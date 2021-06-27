@@ -1,3 +1,6 @@
+test.*
+*.db
+
 .vscode
 .vscode/
 .vscode/*
