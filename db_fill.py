@@ -1,3 +1,10 @@
+from os import path, remove, getenv
+
+DBFILE = getenv('SQLDBFILE')
+
+if path.exists(DBFILE):
+    remove(DBFILE)
+
 from app import db
 from app import User
 from faker import Faker

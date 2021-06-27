@@ -1,10 +1,13 @@
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from os import path
+from os import path, getenv
 import json
 
 app = Flask('flask-sqalchemy')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////{}/test.db'.format(path.dirname(__file__))
+DBFILE = getenv('SQLDBFILE')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////{}'.format(DBFILE)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
