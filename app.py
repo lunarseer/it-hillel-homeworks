@@ -21,6 +21,5 @@ def names():
     for name in FirstNames:
         if name not in UniqueNames:
             UniqueNames.append(name)
-    # return json.dumps({"unique_names": len(UniqueNames)})
-    return json.dumps(sorted(UniqueNames))
+    return json.dumps({"unique_names": len(UniqueNames)})
 
