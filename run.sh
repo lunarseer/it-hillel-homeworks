@@ -1,4 +1,4 @@
-export SQLDBFILE=$PWD/test.db
+export SQLDBFILE=$PWD/app.db
 export FLASK_APP=app.py
 export FLASK_ENV=development
 
