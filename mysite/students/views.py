@@ -1,9 +1,11 @@
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 import random
 
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from faker import Faker
-from .models import Student, Group, Teacher
+
+from .models import Group, Student, Teacher
 
 
 def validate_count(count):
@@ -25,9 +27,11 @@ def get_students(request):
     response = [x.values() for x in Student.objects.all()] or "Not Found"
     return HttpResponse(response)
 
+
 def get_groups(request):
     response = [x.values() for x in Group.objects.all()] or "Not Found"
     return HttpResponse(response)
+
 
 def get_teachers(request):
     response = [x.values() for x in Teacher.objects.all()] or "Not Found"
@@ -37,15 +41,13 @@ def get_teachers(request):
 def generate_student(request):
     gen = Faker()
     stud = Student.objects.create(firstname=gen.first_name(),
-                                lastname=gen.last_name(),
-                                age=random.randint(16, 52))
+                                  lastname=gen.last_name(),
+                                  age=random.randint(16, 52))
     return HttpResponse([stud.values()])
 
 
-@csrf_exempt    #CSRF TOKEN DECORATOR, I DUNNO BUT IT HELPS HANDLE POST REQUESTS
+@csrf_exempt    # CSRF TOKEN DECORATOR, I DUNNO BUT IT HELPS
 def generate_students(request):
-    
-   
     gen = Faker()
     if request.method != "POST":
         responce = "{} method not implemented".format(request.method)
@@ -55,13 +57,12 @@ def generate_students(request):
             students = []
             for _ in range(count):
                 stud = Student.objects.create(firstname=gen.first_name(),
-                                            lastname=gen.last_name(),
-                                            age=random.randint(16, 52))
+                                              lastname=gen.last_name(),
+                                              age=random.randint(16, 52))
                 students.append(stud)
             responce = [x.values() for x in students]
         else:
             return HttpResponse("Wrong Count Value")
-    
     return HttpResponse(responce)
 
 
@@ -76,13 +77,12 @@ def generate_teachers(request):
             students = []
             for _ in range(count):
                 stud = Teacher.objects.create(firstname=gen.first_name(),
-                                            lastname=gen.last_name(),
-                                            age=random.randint(16, 52))
+                                              lastname=gen.last_name(),
+                                              age=random.randint(16, 52))
                 students.append(stud)
             responce = [x.values() for x in students]
         else:
             return HttpResponse("Wrong Count Value")
-    
     return HttpResponse(responce)
 
 
@@ -95,11 +95,9 @@ def generate_groups(request):
         if count > 0:
             groups = []
             for i in range(count):
-                group = Group.objects.create(name=f"group_{i}",
-                )
+                group = Group.objects.create(name=f"group_{i}")
                 groups.append(group)
             responce = [x.values() for x in groups]
         else:
             return HttpResponse("Wrong Count Value")
-    
     return HttpResponse(responce)

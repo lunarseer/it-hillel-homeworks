@@ -1,13 +1,13 @@
 from django.db import models
 
-
 # Create your models here.
+
 
 class GenericModel(models.Model):
 
     def values(self):
         def valid(key):
-            if not key in ["_state"]:
+            if key not in ["_state"]:
                 return True
             return None
 
@@ -15,6 +15,7 @@ class GenericModel(models.Model):
 
     class Meta:
         abstract = True
+
 
 class GenericPerson(GenericModel):
 
