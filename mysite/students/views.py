@@ -1,12 +1,13 @@
 import random
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from faker import Faker
 
 from .models import Group, Student, Teacher
 
+ITEM_NOT_FOUND_RESPONCE = {"result": "error", "message": "item not found"}
 
 def validate_count(count):
     if isinstance(count, str):
@@ -24,18 +25,22 @@ def validate_count(count):
 
 
 def get_students(request):
-    response = [x.values() for x in Student.objects.all()] or "Not Found"
-    return HttpResponse(response)
+    students = [x.values() for x in Student.objects.all()] or ITEM_NOT_FOUND_RESPONCE
+    return JsonResponse(status=200, data=students, safe=False)
 
 
 def get_groups(request):
-    response = [x.values() for x in Group.objects.all()] or "Not Found"
-    return HttpResponse(response)
+    response = [x.values() for x in Group.objects.all()] or ITEM_NOT_FOUND_RESPONCE
+    return JsonResponse(status=200, data=response, safe=False)
 
 
 def get_teachers(request):
-    response = [x.values() for x in Teacher.objects.all()] or "Not Found"
-    return HttpResponse(response)
+    queryparams = {q: v for q, v in request.GET.items()}
+    try:
+        response = [x.values() for x in Teacher.objects.filter(**queryparams)] or ITEM_NOT_FOUND_RESPONCE
+    except Exception as e:
+        return JsonResponse(status=404, data={"result": "error", "message": str(e)})
+    return JsonResponse(status=200, data=response, safe=False)
 
 
 def generate_student(request):
@@ -43,7 +48,7 @@ def generate_student(request):
     stud = Student.objects.create(firstname=gen.first_name(),
                                   lastname=gen.last_name(),
                                   age=random.randint(16, 52))
-    return HttpResponse([stud.values()])
+    return JsonResponse(status=200, data=[stud.values()], safe=False)
 
 
 @csrf_exempt    # CSRF TOKEN DECORATOR, I DUNNO BUT IT HELPS
@@ -62,8 +67,8 @@ def generate_students(request):
                 students.append(stud)
             responce = [x.values() for x in students]
         else:
-            return HttpResponse("Wrong Count Value")
-    return HttpResponse(responce)
+            return JsonResponse(status=500, data={"status":"error","message":f"Wrong Count Value: {count}"})
+    return JsonResponse(status=200, data=responce, safe=False)
 
 
 @csrf_exempt
@@ -74,13 +79,13 @@ def generate_teachers(request):
     if request.method == "POST":
         count = validate_count(request.POST.get('count', 0))
         if count > 0:
-            students = []
+            teachers = []
             for _ in range(count):
-                stud = Teacher.objects.create(firstname=gen.first_name(),
+                teacher = Teacher.objects.create(firstname=gen.first_name(),
                                               lastname=gen.last_name(),
                                               age=random.randint(16, 52))
-                students.append(stud)
-            responce = [x.values() for x in students]
+                teachers.append(teacher)
+            responce = [x.values() for x in teachers]
         else:
             return HttpResponse("Wrong Count Value")
     return HttpResponse(responce)
