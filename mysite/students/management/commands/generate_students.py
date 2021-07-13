@@ -1,13 +1,13 @@
 from random import randrange
 
 from django.core.management.base import BaseCommand, CommandError
-from students.models import Teacher
+from students.models import Student
 
 from faker import Faker
 
 
 class Command(BaseCommand):
-    help = 'Generate numbers of teachers'
+    help = 'Generate numbers of students'
 
     def add_arguments(self, parser):
         parser.add_argument('count', nargs='?', type=int, default=100)
@@ -16,11 +16,11 @@ class Command(BaseCommand):
         count = options.get('count', 0)
         if count:
             gen = Faker()
-            teachers = []
+            students = []
             for _ in range(count):
-                teacher = Teacher.objects.create(firstname=gen.first_name(),
+                student = Student.objects.create(firstname=gen.first_name(),
                                               lastname=gen.last_name(),
-                                              age=randrange(25, 70))
-                teachers.append(teacher)
-            responce = [x.values() for x in teachers]
+                                              age=randrange(16, 50))
+                students.append(student)
+            responce = [x.values() for x in students]
         
