@@ -25,6 +25,9 @@ class GenericPerson(GenericModel):
     def __str__(self):
         return "{} {} ({})".format(self.firstname, self.lastname, self.id)
 
+    def values(self):
+        return GenericModel.values(self)
+
     class Meta:
         abstract = True
 

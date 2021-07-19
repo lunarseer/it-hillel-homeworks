@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import random
 
@@ -39,7 +39,8 @@ def generate_student(request):
     stud = Student.objects.create(firstname=gen.first_name(),
                                 lastname=gen.last_name(),
                                 age=random.randint(16, 52))
-    return HttpResponse([stud.values()])
+    print(stud.values())
+    return HttpResponse(str(stud.values()))
 
 
 @csrf_exempt    #CSRF TOKEN DECORATOR, I DUNNO BUT IT HELPS HANDLE POST REQUESTS
@@ -51,6 +52,7 @@ def generate_students(request):
         responce = "{} method not implemented".format(request.method)
     if request.method == "POST":
         count = validate_count(request.POST.get('count', 0))
+        print(count)
         if count > 0:
             students = []
             for _ in range(count):
