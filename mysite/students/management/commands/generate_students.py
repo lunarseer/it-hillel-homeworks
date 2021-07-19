@@ -1,13 +1,14 @@
 from random import randrange
 
 from django.core.management.base import BaseCommand
-from students.models import Student
 
 from faker import Faker
 
+from students.models import Student
+
 
 class Command(BaseCommand):
-    help = 'Generate numbers of students'
+    # help = 'Generate numbers of students'
 
     def add_arguments(self, parser):
         parser.add_argument('count', nargs='?', type=int, default=100)
@@ -22,4 +23,3 @@ class Command(BaseCommand):
                                                  lastname=gen.last_name(),
                                                  age=randrange(16, 50))
                 students.append(student)
-            # responce = [x.values() for x in students]
