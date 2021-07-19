@@ -39,7 +39,7 @@ def generate_student(request):
     stud = Student.objects.create(firstname=gen.first_name(),
                                 lastname=gen.last_name(),
                                 age=random.randint(16, 52))
-    print(stud.values())
+    # print(stud.values())
     return HttpResponse(str(stud.values()))
 
 
@@ -52,7 +52,7 @@ def generate_students(request):
         responce = "{} method not implemented".format(request.method)
     if request.method == "POST":
         count = validate_count(request.POST.get('count', 0))
-        print(count)
+        # print(count)
         if count > 0:
             students = []
             for _ in range(count):
