@@ -7,7 +7,6 @@ from faker import Faker
 
 from .models import Group, Student, Teacher
 
-ITEM_NOT_FOUND_RESPONCE = {"result": "error", "message": "item not found"}
 
 def validate_count(count):
     if isinstance(count, str):
@@ -25,21 +24,21 @@ def validate_count(count):
 
 
 def get_students(request):
-    students = [x.values() for x in Student.objects.all()] or ITEM_NOT_FOUND_RESPONCE
+    students = [x.values() for x in Student.objects.all()]
     return JsonResponse(status=200, data=students, safe=False)
 
 
 def get_groups(request):
-    response = [x.values() for x in Group.objects.all()] or ITEM_NOT_FOUND_RESPONCE
+    response = [x.values() for x in Group.objects.all()]
     return JsonResponse(status=200, data=response, safe=False)
 
 
 def get_teachers(request):
-    queryparams = {q: v for q, v in request.GET.items()}
+    query = {q: v for q, v in request.GET.items()}
     try:
-        response = [x.values() for x in Teacher.objects.filter(**queryparams)] or ITEM_NOT_FOUND_RESPONCE
+        response = [x.values() for x in Teacher.objects.filter(**query)]
     except Exception as e:
-        return JsonResponse(status=404, data={"result": "error", "message": str(e)})
+        return JsonResponse(status=404, data={"message": str(e)})
     return JsonResponse(status=200, data=response, safe=False)
 
 
@@ -67,7 +66,9 @@ def generate_students(request):
                 students.append(stud)
             responce = [x.values() for x in students]
         else:
-            return JsonResponse(status=500, data={"status":"error","message":f"Wrong Count Value: {count}"})
+            return JsonResponse(status=500,
+                                data={"status": "error",
+                                      "message": "Wrong Count Value"})
     return JsonResponse(status=200, data=responce, safe=False)
 
 
@@ -82,8 +83,8 @@ def generate_teachers(request):
             teachers = []
             for _ in range(count):
                 teacher = Teacher.objects.create(firstname=gen.first_name(),
-                                              lastname=gen.last_name(),
-                                              age=random.randint(16, 52))
+                                                 lastname=gen.last_name(),
+                                                 age=random.randint(16, 52))
                 teachers.append(teacher)
             responce = [x.values() for x in teachers]
         else:

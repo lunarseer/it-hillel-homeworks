@@ -1,6 +1,6 @@
 from random import randrange
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from students.models import Teacher
 
 from faker import Faker
@@ -19,8 +19,7 @@ class Command(BaseCommand):
             teachers = []
             for _ in range(count):
                 teacher = Teacher.objects.create(firstname=gen.first_name(),
-                                              lastname=gen.last_name(),
-                                              age=randrange(25, 70))
+                                                 lastname=gen.last_name(),
+                                                 age=randrange(25, 70))
                 teachers.append(teacher)
-            responce = [x.values() for x in teachers]
-        
+            # responce = [x.values() for x in teachers]

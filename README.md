@@ -1,5 +1,12 @@
 # IT-HILLEL HOMEWORKS (I.Chopenko)
 
-- scripts/DB_SETUP.sh - install requirements/create db/migrate db/create superuser("admin": "admin")/generates random students and teachers
-- scripts/RUN_SERVER.sh - run Django Server with preconfigured environments("SECRET_KEY")
+- create and activate virtualenv
+   
+- start RUN_SERVER.sh in root folder
+    install requirement packages
+    create db
+    migrate db
+    creates superuser("admin": "admin")
+    generates random 100 students and 50 teachers
+    starts Django Server with preconfigured environments("SECRET_KEY")
 

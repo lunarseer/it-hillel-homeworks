@@ -24,7 +24,9 @@ class GenericPerson(GenericModel):
     age = models.IntegerField(default=16)
 
     def __str__(self):
-        return "{} {} - {} y.o.".format(self.firstname, self.lastname, self.age)
+        return "{} {} - {} y.o.".format(self.firstname,
+                                        self.lastname,
+                                        self.age)
 
     class Meta:
         abstract = True
