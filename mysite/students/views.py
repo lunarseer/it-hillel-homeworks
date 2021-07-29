@@ -7,15 +7,22 @@ from .models import Student, Group, Teacher
 
 
 def validate_count(count):
+
+    def validate_number(number):
+        if 1 <= number <= 100:
+            return number
+        else:
+            return
+
     if isinstance(count, str):
         try:
-            return int(count)
+            return validate_number(int(count))
         except ValueError:
-            return 0
-    if isinstance(count, int):
-        return count
-    if isinstance(count, float):
-        return int(count)
+            return 
+    elif isinstance(count, int):
+        return validate_number(count)
+    elif isinstance(count, float):
+        return validate_number(int(count))
 
 
 # Create your views here.
@@ -52,8 +59,7 @@ def generate_students(request):
         responce = "{} method not implemented".format(request.method)
     if request.method == "POST":
         count = validate_count(request.POST.get('count', 0))
-        # print(count)
-        if count > 0:
+        if count:
             students = []
             for _ in range(count):
                 stud = Student.objects.create(firstname=gen.first_name(),
@@ -74,7 +80,7 @@ def generate_teachers(request):
         responce = "{} method not implemented".format(request.method)
     if request.method == "POST":
         count = validate_count(request.POST.get('count', 0))
-        if count > 0:
+        if count:
             students = []
             for _ in range(count):
                 stud = Teacher.objects.create(firstname=gen.first_name(),
@@ -94,7 +100,7 @@ def generate_groups(request):
         responce = "{} method not implemented".format(request.method)
     if request.method == "POST":
         count = validate_count(request.POST.get('count', 0))
-        if count > 0:
+        if count:
             groups = []
             for i in range(count):
                 group = Group.objects.create(name=f"group_{i}",

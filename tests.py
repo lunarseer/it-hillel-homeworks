@@ -53,6 +53,8 @@ def get_teachers(**query):
     print(r.text, '\n')
 
 if __name__ == '__main__':
+    generate_students(count=0)
+    generate_students(count=-2)
     generate_student()
     generate_students(count=30)
     generate_teachers(count=5)
