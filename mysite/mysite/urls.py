@@ -20,6 +20,7 @@ from students import views as stud
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('create-student/', stud.create_student),
     path('generate-student/', stud.generate_student),
     path('generate-students/', stud.generate_students),
     path('generate-teachers/', stud.generate_teachers),

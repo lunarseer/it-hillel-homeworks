@@ -2,10 +2,12 @@ import random
 
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
 
 from faker import Faker
 
 from .models import Group, Student, Teacher
+from .forms import StudentForm
 
 
 def validate_count(count):
@@ -21,6 +23,19 @@ def validate_count(count):
 
 
 # Create your views here.
+
+
+def create_student(request):
+
+    if request.method == 'GET':
+        form = StudentForm(request.POST)
+    if request.method == 'POST':
+        form = StudentForm()
+        if form.is_valid():
+            return HttpResponse('OK')
+
+    return render(request, 'create_student.html', {'form': form})
+    
 
 
 def get_students(request):
